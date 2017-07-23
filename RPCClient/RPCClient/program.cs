@@ -8,19 +8,19 @@ namespace RPCClient
         static void Main(string[] args)
         {
             var RPCClient = new RPCClient();
-            string n = "";
+            string path = "";
             var response = "";
 
             while (true)
             {
                
-                Console.WriteLine("Enter the trace");
-                n = Console.ReadLine();
+                Console.WriteLine("Enter the path");
+                path = Console.ReadLine();
 
-                if (n == "end") break;
+                if (path == "end") break;
 
-                response = RPCClient.Call(n);
-                Console.WriteLine("[.] Got {0}", response);                
+                response = RPCClient.Call(path);
+                Console.WriteLine(response);                
             }
 
             RPCClient.Close();
