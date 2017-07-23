@@ -1,0 +1,16 @@
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.deps.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.runtimeconfig.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.runtimeconfig.dev.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.AssemblyInfo.cs
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.deps.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.runtimeconfig.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.runtimeconfig.dev.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\bin\Debug\netcoreapp1.1\RPCServer.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.AssemblyInfo.cs
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCServer\RPCServer\obj\Debug\netcoreapp1.1\RPCServer.pdb

@@ -1,0 +1,38 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v1.1",
+    "signature": "fd5a5ccb2ea1cd62b1c08b9f521cac375d0b25e6"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v1.1": {
+      "rpcclient/1.0.0": {
+        "dependencies": {
+          "RabbitMQ.Client": "5.0.1-rc3"
+        },
+        "runtime": {
+          "RPCClient.dll": {}
+        }
+      },
+      "rabbitmq.client/5.0.1-rc3": {
+        "runtime": {
+          "lib/netstandard1.5/RabbitMQ.Client.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "rpcclient/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "rabbitmq.client/5.0.1-rc3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kfVKAQBucwK2lfO5cC0P12nv9KOzusqqKdbPZe2E04Nr6KnxqwWsZYexle0n3yOfi9rFrYFm7dawY2Aleljj1Q==",
+      "path": "rabbitmq.client/5.0.1-rc3",
+      "hashPath": "rabbitmq.client.5.0.1-rc3.nupkg.sha512"
+    }
+  }
+}

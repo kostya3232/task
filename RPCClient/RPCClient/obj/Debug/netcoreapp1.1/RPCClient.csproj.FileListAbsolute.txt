@@ -1,0 +1,16 @@
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.deps.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.runtimeconfig.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.runtimeconfig.dev.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.AssemblyInfo.cs
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\example6\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.deps.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.runtimeconfig.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.runtimeconfig.dev.json
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\bin\Debug\netcoreapp1.1\RPCClient.pdb
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.AssemblyInfo.cs
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.dll
+C:\Users\Kostya\Desktop\examples_rabbitmq\task\RPCClient\RPCClient\obj\Debug\netcoreapp1.1\RPCClient.pdb
