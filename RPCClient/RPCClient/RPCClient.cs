@@ -13,19 +13,25 @@ namespace RPCClient
         
         private IConnection connection;
         private IModel channel;
-        private string replyQueueName;
+        
         private QueueingBasicConsumer consumer;
+        private string user;
+        private string ip;
 
-        public RPCClient()
+        public RPCClient(string IP, string us)
         {
+            ip = IP;
+            user = us;
             var factory = new ConnectionFactory() { HostName = "localhost" };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
-            replyQueueName = channel.QueueDeclare().QueueName;
+            channel.QueueDeclare(user, false, false, false, null);
             consumer = new QueueingBasicConsumer(channel);
-            channel.BasicConsume(replyQueueName, true, consumer);
+            channel.BasicConsume(user, true, consumer);
             
         }
+
+      
 
         //генерирует свойства сообщения: адрес обратой доставки и id сообщения,
         //отправляет и принимает ответ, с проверкой его id, блокируется пока не получит нужный ответ        
@@ -33,11 +39,11 @@ namespace RPCClient
         {            
             var coreId = Guid.NewGuid().ToString();
             var props = channel.CreateBasicProperties();
-            props.ReplyTo = replyQueueName;
+            props.ReplyTo = user;
             props.CorrelationId = coreId;
                         
             var messageByte = Encoding.UTF8.GetBytes(message);
-            channel.BasicPublish("", "rpc_queue", props, messageByte);
+            channel.BasicPublish("", ip, props, messageByte);
 
             while (true)
             {
