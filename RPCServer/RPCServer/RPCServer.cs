@@ -31,10 +31,15 @@ namespace RPCServer
                     {
                         var str = sr.ReadLine();
 
-                        if (str == userAndPswd) i = 1;
+                        if (str == userAndPswd)
+                        {
+                            i = 1;
+                            sr.Dispose();
+                        }
                         else if (sr.Peek() == -1)
                         {
                             Console.WriteLine("Error login or password");
+                            sr.Dispose();
                             return;
                         }
                     }
@@ -51,33 +56,47 @@ namespace RPCServer
                     consumer.Received += (model, ea) =>
                     {
                         var Proc = new Procedures();
-                        
-                        
+                        string response = "";
 
                         var body = ea.Body;
-                        var props = ea.BasicProperties;                        
+                        var props = ea.BasicProperties;
                         //id ответного сообщения
                         var replyProps = channel.CreateBasicProperties();
                         replyProps.CorrelationId = props.CorrelationId;
-                        
+
                         var message = Encoding.UTF8.GetString(body);
                         Console.WriteLine(ea.BasicProperties.ReplyTo + " " + message);
 
-                        var responseByte = Encoding.UTF8.GetBytes(Proc.ListFiles(message));
+                        int k = message.IndexOf(" ");
+
+                        switch (message.Remove(k))
+                        {
+                            case "auth":
+                                response = Proc.auth(message.Substring(k + 1));
+                                break;
+                            case "ls":
+                                response = Proc.ListFiles(message.Substring(k + 1));
+                                break;
+                            default:
+                                response = "Error in command";
+                                break;
+                        }
+
+                        var responseByte = Encoding.UTF8.GetBytes(response);
                         channel.BasicPublish("", props.ReplyTo, replyProps, responseByte);
-                        channel.BasicAck(ea.DeliveryTag, false);                        
+                        channel.BasicAck(ea.DeliveryTag, false);
 
                     };
-                    
+
                     Console.WriteLine("Press [enter] to exit");
                     Console.ReadLine();
 
-                    
+
 
                 }
             }
         }
 
-        
+
     }
 }

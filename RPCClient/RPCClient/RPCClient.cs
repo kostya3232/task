@@ -10,10 +10,10 @@ namespace RPCClient
 {
     class RPCClient
     {
-        
+
         private IConnection connection;
         private IModel channel;
-        
+
         private QueueingBasicConsumer consumer;
         private string user;
         private string ip;
@@ -28,20 +28,20 @@ namespace RPCClient
             channel.QueueDeclare(user, false, false, false, null);
             consumer = new QueueingBasicConsumer(channel);
             channel.BasicConsume(user, true, consumer);
-            
+
         }
 
-      
+
 
         //генерирует свойства сообщения: адрес обратой доставки и id сообщения,
         //отправляет и принимает ответ, с проверкой его id, блокируется пока не получит нужный ответ        
         public string Call(string message)
-        {            
+        {
             var coreId = Guid.NewGuid().ToString();
             var props = channel.CreateBasicProperties();
             props.ReplyTo = user;
             props.CorrelationId = coreId;
-                        
+
             var messageByte = Encoding.UTF8.GetBytes(message);
             channel.BasicPublish("", ip, props, messageByte);
 
@@ -55,6 +55,18 @@ namespace RPCClient
         public void Close()
         {
             connection.Close();
+        }
+
+        public void IfAuth(string us)
+        {
+            user = us;
+            connection.Close();
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            connection = factory.CreateConnection();
+            channel = connection.CreateModel();
+            channel.QueueDeclare(user, false, false, false, null);
+            consumer = new QueueingBasicConsumer(channel);
+            channel.BasicConsume(user, true, consumer);
         }
     }
 }
