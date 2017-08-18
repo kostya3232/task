@@ -17,13 +17,28 @@ namespace RPCClient
         private QueueingBasicConsumer consumer;
         private string user;
         private string ip;
+        public int flag = 0;
 
-        public RPCClient(string IP, string us)
+
+        public RPCClient(string IP, string us, string pass)
         {
             ip = IP;
             user = us;
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            connection = factory.CreateConnection();
+            var factory = new ConnectionFactory();
+            factory.HostName = ip;
+            factory.UserName = user;
+            factory.Password = pass;
+            try
+            {
+                connection = factory.CreateConnection();
+                flag = 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("error in login or password");
+                flag = 1;
+                return;
+            }
             channel = connection.CreateModel();
             channel.QueueDeclare(user, false, false, false, null);
             consumer = new QueueingBasicConsumer(channel);
@@ -57,16 +72,6 @@ namespace RPCClient
             connection.Close();
         }
 
-        public void IfAuth(string us)
-        {
-            user = us;
-            connection.Close();
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-            channel.QueueDeclare(user, false, false, false, null);
-            consumer = new QueueingBasicConsumer(channel);
-            channel.BasicConsume(user, true, consumer);
-        }
+        
     }
 }

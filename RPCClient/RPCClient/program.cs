@@ -7,49 +7,39 @@ namespace RPCClient
     class Program
     {
         static void Main(string[] args)
-        {
+        {            
             string user = "";
-            //ввод ip адресса, логина и пароля, проверка логина и пароля
-            Console.Write("Enter IP server:");
-            string IP = Console.ReadLine();
+            string passwd = "";
+            string IP = "";
 
-            //ацтентификация
-            while (true)
+            if (args.Length != 3)
             {
-                Console.WriteLine("Enter username and password");
-                string command = Console.ReadLine();
-
-                int c = command.IndexOf(" ");
-                user = command.Remove(c);
-                var Client = new RPCClient(IP, user);
-                if (command == "exit") break;
-                var resp = Client.Call("auth " + command);
-                if (resp == "success")
-                {
-                    Client.Close();
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine(resp);
-                }
-                Client.Close();
+                IP = "localhost";
+                user = "guest";
+                passwd = "guest";
+            }
+            else
+            {
+                IP = args[0];
+                user = args[1];
+                passwd = args[2];
             }
 
-            var RPCClient = new RPCClient(IP, user);
+            var RPCClient = new RPCClient(IP, user, passwd);
+            if (RPCClient.flag == 1) return;
+                        
             while (true)
             {
-                Console.WriteLine("Enter the command");
+                Console.WriteLine("Enter the path: ");
                 string command = Console.ReadLine();
-
-                int k = command.IndexOf(" ");
-                if (command.Remove(k) == "auth") RPCClient.IfAuth(command.Substring(k + 1, command.Substring(k + 1).IndexOf(" ")));
+               
                 if (command == "exit") break;
                 Console.WriteLine(RPCClient.Call(command));
             }
 
             RPCClient.Close();
-
+            
+            
         }
     }
 }
