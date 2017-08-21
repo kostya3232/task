@@ -1,6 +1,4 @@
 ﻿using System;
-using RPCClient;
-using System.IO;
 
 namespace RPCClient
 {
