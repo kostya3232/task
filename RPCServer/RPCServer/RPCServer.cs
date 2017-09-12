@@ -1,87 +1,115 @@
 ﻿using System;
+using System.IO;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Collections.Generic;
 
 namespace RPCServer
 {
     class RPCServer
     {
-        static void Main(string[] args)
+        protected IConnection _connection;
+        protected IModel _channel;
+        protected List<string> _message = new List<string>();
+
+        protected EventingBasicConsumer _consumer;
+        protected string _user;
+        protected string _ip;
+        public int Flag { get; } = 0;
+
+        public RPCServer(string ip, string user, string pass)
         {
-            string IP = "";
-            string user = "";
-            string passwd = "";
+            _ip = ip;
+            _user = user;
 
-            var factory = new ConnectionFactory();
-            IConnection connection;
+            var _factory = new ConnectionFactory();
 
-            if (args.Length != 3)
-            {
-                user = "guest";
-                passwd = "guest";
-                IP = "localhost";
-            }
-            else
-            {
-                IP = args[0];
-                user = args[1];
-                passwd = args[2];
-            }
-
-            factory.UserName = user;
-            factory.Password = passwd;
-            factory.HostName = IP;
+            _factory.UserName = _user;
+            _factory.Password = pass;
+            _factory.HostName = _ip;
 
             try
             {
-                connection = factory.CreateConnection();
+                _connection = _factory.CreateConnection();
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("error in ip, username or password");
+                Flag = 0;
                 return;
             }
-            
-            using (var channel = connection.CreateModel())
-            {                
-                //создаем очередь с отправлением сообщения незанятому работнику
-                channel.QueueDeclare(IP, false, false, false, null);
-                channel.BasicQos(0, 1, false);
 
-                //прием сообщения
-                var consumer = new EventingBasicConsumer(channel);
-                channel.BasicConsume(IP, false, consumer);
-                Console.WriteLine("waiting for RPC requests");
+            _channel = _connection.CreateModel();
 
-                consumer.Received += (model, ea) =>
-                {
-                    var Proc = new Procedures();
-                    string response = "";
+            //создаем очередь с отправлением сообщения незанятому работнику
+            _channel.QueueDeclare(_ip, false, false, false, null);
+            _channel.BasicQos(0, 1, false);
 
-                    var body = ea.Body;
-                    var props = ea.BasicProperties;
-                    //id ответного сообщения
-                    var replyProps = channel.CreateBasicProperties();
-                    replyProps.CorrelationId = props.CorrelationId;
-
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(ea.BasicProperties.ReplyTo + " " + message);
-
-                    response = Proc.ListFiles(message);
-
-                    var responseByte = Encoding.UTF8.GetBytes(response);
-                    channel.BasicPublish("", props.ReplyTo, replyProps, responseByte);
-                    channel.BasicAck(ea.DeliveryTag, false);
-                };
-
-                Console.WriteLine("Press [enter] to exit");
-                Console.ReadLine();
+            //прием сообщения
+            _consumer = new EventingBasicConsumer(_channel);
+            _channel.BasicConsume(ip, false, _consumer);
+            Console.WriteLine("waiting for RPC requests");
+            _consumer.Received += (model, ea) =>
+            {
                 
-            }
-            
+                string response = "";
+
+                var body = ea.Body;
+                var props = ea.BasicProperties;
+                //id ответного сообщения
+                var replyProps = _channel.CreateBasicProperties();
+                replyProps.CorrelationId = props.CorrelationId;
+
+                var mess = Encoding.UTF8.GetString(body);
+                                
+                _message.Add(mess);
+                Console.WriteLine(ea.BasicProperties.ReplyTo + " " + mess);
+                
+                response = ListFiles(_message);
+                _message.Clear();
+
+                var responseByte = Encoding.UTF8.GetBytes(response);
+                _channel.BasicPublish("", props.ReplyTo, replyProps, responseByte);
+                _channel.BasicAck(ea.DeliveryTag, false);
+            };
         }
 
+       
+        protected string ListFiles(List<string> mess)
+        {
+            var resp = "";
+            string path = String.Join(null,mess);
 
+            try
+            {
+                var response = Directory.GetDirectories(path);
+                int n = response.Length;
+                resp += "Directories:" + Environment.NewLine;
+                for (int i = 0; i < n; i++)
+                {
+                    resp += response[i] + Environment.NewLine;
+                }
+                response = Directory.GetFiles(path);
+                n = response.Length;
+                resp += "Files:" + Environment.NewLine;
+                for (int i = 0; i < n; i++)
+                {
+                    resp += response[i] + Environment.NewLine;
+                }
+            }
+            catch (Exception)
+            {
+                resp = "failed";
+            }
+
+            return resp;
+
+        }
+
+        public void RPCClose()
+        {
+            _connection.Close();
+        }
     }
 }

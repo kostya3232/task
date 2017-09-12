@@ -8,38 +8,38 @@ namespace RPCClient
     class RPCClient
     {
 
-        private IConnection connection;
-        private IModel channel;
+        protected IConnection _connection;
+        protected IModel _channel;
 
-        private QueueingBasicConsumer consumer;
-        private string user;
-        private string ip;
-        public int flag = 0;
+        protected QueueingBasicConsumer _consumer;
+        protected string _user;
+        protected string _ip;
+        public int Flag { get; } = 0;
 
 
-        public RPCClient(string IP, string us, string pass)
+        public RPCClient(string ip, string us, string pass)
         {
-            ip = IP;
-            user = us;
-            var factory = new ConnectionFactory();
-            factory.HostName = ip;
-            factory.UserName = user;
-            factory.Password = pass;
+            _ip = ip;
+            _user = us;
+            var _factory = new ConnectionFactory();
+            _factory.HostName = _ip;
+            _factory.UserName = _user;
+            _factory.Password = pass;
             try
             {
-                connection = factory.CreateConnection();
-                flag = 0;
+                _connection = _factory.CreateConnection();
+                Flag = 0;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("error in login or password");
-                flag = 1;
+                Flag = -1;
                 return;
             }
-            channel = connection.CreateModel();
-            channel.QueueDeclare(user, false, false, false, null);
-            consumer = new QueueingBasicConsumer(channel);
-            channel.BasicConsume(user, true, consumer);
+            _channel = _connection.CreateModel();
+            _channel.QueueDeclare(_user, false, false, false, null);
+            _consumer = new QueueingBasicConsumer(_channel);
+            _channel.BasicConsume(_user, true, _consumer);
 
         }
 
@@ -50,23 +50,26 @@ namespace RPCClient
         public string Call(string message)
         {
             var coreId = Guid.NewGuid().ToString();
-            var props = channel.CreateBasicProperties();
-            props.ReplyTo = user;
+            var props = _channel.CreateBasicProperties();
+            props.ReplyTo = _user;
             props.CorrelationId = coreId;
 
             var messageByte = Encoding.UTF8.GetBytes(message);
-            channel.BasicPublish("", ip, props, messageByte);
+            _channel.BasicPublish("", _ip, props, messageByte);
 
             while (true)
             {
-                var ea = (BasicDeliverEventArgs)consumer.Queue.Dequeue();
-                if (ea.BasicProperties.CorrelationId == coreId) return Encoding.UTF8.GetString(ea.Body);
+                var _ea = _consumer.Queue.Dequeue();
+                if (_ea.BasicProperties.CorrelationId == coreId)
+                {
+                    return Encoding.UTF8.GetString(_ea.Body);
+                }
             }
         }
 
         public void Close()
         {
-            connection.Close();
+            _connection.Close();
         }
 
         
